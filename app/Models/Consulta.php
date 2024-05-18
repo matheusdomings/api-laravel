@@ -8,27 +8,26 @@ use Illuminate\Database\Eloquent\Model;
 class Consulta extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'cons_codigo';
-    protected $fillable = ['cons_codigo', 'cons_med','particular','data','hora', 'cons_pac', 'vinculo_id'];
-    protected $hidden = ['cons_med','cons_pac', 'vinculo_id', 'created_at', 'updated_at'];
+    protected $table = 'consulta';
+    protected $primaryKey = 'id';
+    protected $fillable = ['id', 'cons_codigo', 'med_id', 'pac_id', 'particular', 'data', 'hora', 'vinculo_id'];
+    protected $hidden = ['med_id','pac_id', 'vinculo_id', 'created_at', 'updated_at'];
 
     public function medico(){
-        return $this->hasOne(Medico::class, 'med_codigo', 'cons_med')->with('especialidade');
+        return $this->hasOne(Medico::class, 'id', 'med_id')->with('especialidade');
     }
 
-
     public function vinculo(){
-        return $this->hasOne(Vinculo::class, 'vinc_codigo', 'vinculo_id')->with('planoSaude');
+        return $this->hasOne(Vinculo::class, 'id', 'vinculo_id')->with('planoSaude');
     }
 
     public function paciente(){
-        return $this->hasOne(Paciente::class, 'pac_codigo', 'cons_pac');
+        return $this->hasOne(Paciente::class, 'id', 'pac_id');
     }
 
-    // Modelo Paciente
     public function procedimento()
     {
-        return $this->belongsToMany(Procedimento::class, 'cons_procs', 'consulta_id', 'procedimento_id');
+        return $this->belongsToMany(Procedimento::class, 'consulta_procedimento', 'cons_id', 'proc_id');
     }
 
 }

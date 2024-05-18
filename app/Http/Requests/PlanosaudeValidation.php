@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PlanosaudeValidation extends FormRequest
+class PlanoSaudeValidation extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,8 @@ class PlanosaudeValidation extends FormRequest
     public function rules()
     {
         return [
-         'plano_descricao' => 'required|unique:plano_saudes',
-         'plano_telefone' => 'required|unique:plano_saudes',
+         'plano_descricao' => 'required|unique:plano_saude',
+         'plano_telefone' => 'required|unique:plano_saude',
         ];
     }
 

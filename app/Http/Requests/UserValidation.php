@@ -20,7 +20,7 @@ class UserValidation extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'email' => 'required|email|unique:usuario_administradors',
+            'email' => 'required|email|unique:usuarios',
             'password' => 'required|string|min:6|max:50'
         ];
     }

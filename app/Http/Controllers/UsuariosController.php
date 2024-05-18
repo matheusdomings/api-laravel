@@ -8,21 +8,18 @@ use App\Models\Usuarios;
 use App\Http\Requests\UserValidation;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Http\Requests\AuthenticateValidation;
-use Illuminate\Foundation\Auth\UserAdministrador;
 
 class UsuariosController extends Controller
 {
     public function realizarCadastro(UserValidation $request)
     {
-
-        // Cadastro de usuário
         $user = Usuarios::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
 
-        return response($user, 201);
+        return response()->json($user, 201);
     }
 
     public function realizarLogin(AuthenticateValidation $request)

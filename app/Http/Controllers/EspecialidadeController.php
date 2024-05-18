@@ -17,7 +17,10 @@ class EspecialidadeController extends Controller
     public function cadastrar(EspecialidadeValidation $request)
     {
 
-        $especialidade = Especialidade::create(['espec_codigo' => mt_rand(0, 10000), 'espec_nome' => $request->espec_nome]);
+        $especialidade = Especialidade::create([
+            'espec_codigo' => mt_rand(0, 10000),
+            'espec_nome' => $request->espec_nome
+        ]);
 
         return response(['especialidade' =>  $especialidade], 201);
     }
@@ -29,7 +32,7 @@ class EspecialidadeController extends Controller
         $especialidade = Especialidade::where('id', $id)->first();
 
         if (!$especialidade) {
-            return response(['status' => 'Especialidade não encontrado.'], 404);
+            return response(['status' => 'Especialidade não encontrada.'], 404);
         }
 
         return response($especialidade, 200);
@@ -40,7 +43,7 @@ class EspecialidadeController extends Controller
         $especialidade = Especialidade::where('id', $id)->first();
 
         if (!$especialidade) {
-            return response(['status' => 'Especialidade não encontrado.'], 404);
+            return response(['status' => 'Especialidade não encontrada.'], 404);
         }
 
         $especialidade->update([
@@ -54,11 +57,11 @@ class EspecialidadeController extends Controller
     {
         $especialidade =  Especialidade::where('id', $id)->first();
         if (!$especialidade) {
-            return response(['status' => 'Especialidade não encontrado nos registros.'], 404);
+            return response(['status' => 'Especialidade não encontrada nos registros.'], 404);
         }
 
         $especialidade->delete();
 
-        return response(['status' => 'Especialidade deletado com sucesso.'], 200);
+        return response(['status' => 'Especialidade deletada com sucesso.'], 200);
     }
 }

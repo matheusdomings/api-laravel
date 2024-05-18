@@ -15,13 +15,10 @@ class CreateProcedimentoTable extends Migration
     {
         Schema::create('procedimento', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('espec_id');
             $table->uuid('proc_codigo');
             $table->string('proc_nome');
             $table->string('proc_valor');
             $table->timestamps();
-
-            $table->foreign('espec_id')->references('id')->on('especialidade')->onDelete('cascade');
         });
     }
 

@@ -6,10 +6,10 @@ services:
     network_mode: bridge
     container_name: db
     environment:
-      MYSQL_ROOT_PASSWORD: tisaude
-      MYSQL_DATABASE: api_ti_saude
-      MYSQL_USER: thiago
-      MYSQL_PASSWORD: tisaude123
+      MYSQL_ROOT_PASSWORD: apil@ravel2024
+      MYSQL_DATABASE: api_laravel
+      MYSQL_USER: mtdomingos
+      MYSQL_PASSWORD: mt123domingos
     ports:
       - "3306:3306"
     volumes:

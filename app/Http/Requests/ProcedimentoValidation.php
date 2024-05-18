@@ -24,7 +24,7 @@ class ProcedimentoValidation extends FormRequest
     public function rules()
     {
         return [
-            'proc_nome' => 'required|string|unique:procedimentos',
+            'proc_nome' => 'required|string|unique:procedimento',
             'proc_valor' => 'required|integer',
         ];
     }

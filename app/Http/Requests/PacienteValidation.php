@@ -25,8 +25,8 @@ class PacienteValidation extends FormRequest
     {
         return [
          'pac_nome' => 'required',
-         'pac_telefone' => 'required|unique:pacientes',
-         'pac_dataNascimento' => 'required',
+         'pac_telefone' => 'required|unique:paciente',
+         'pac_dt_nascimento' => 'required',
         ];
     }
 
@@ -34,7 +34,7 @@ class PacienteValidation extends FormRequest
     {
         return [
             'pac_nome.required' => 'Campo obrigátorio.',
-            'pac_dataNascimento.required' => 'Campo obrigátorio.',
+            'pac_dt_nascimento.required' => 'Campo obrigátorio.',
 
         ];
     }

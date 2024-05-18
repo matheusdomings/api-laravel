@@ -8,19 +8,18 @@ use Illuminate\Http\Request;
 
 class PlanoSaudeController extends Controller
 {
-    public function listar(Request $request)
+    public function listar()
     {
-        $registrosPorPagina = $request->registro_por_pagina;
-        $PlanoSaudes = PlanoSaude::paginate($registrosPorPagina);
-
-        return response($PlanoSaudes, 200);
+        $Planos = PlanoSaude::all();
+        return response($Planos, 200);
     }
 
-    public function cadastrar(PlanosaudeValidation $request)
+    public function cadastrar(PlanoSaudeValidation $request)
     {
         $PlanoSaude = PlanoSaude::create([
             'plano_descricao' => $request->plano_descricao,
             'plano_telefone' => $request->plano_telefone,
+            'plano_codigo' => mt_rand(0, 10000)
         ]);
 
         return response(['PlanoSaude' => $PlanoSaude], 201);
@@ -29,10 +28,10 @@ class PlanoSaudeController extends Controller
     public function buscarPlanoSaude($id)
     {
 
-        $PlanoSaude = PlanoSaude::where('plano_codigo', $id)->first();
+        $PlanoSaude = PlanoSaude::where('id', $id)->first();
 
         if (!$PlanoSaude) {
-            return response(['status' => 'PlanoSaude não encontrado.'], 404);
+            return response(['status' => 'Plano de saúde não encontrado!'], 404);
         }
 
         return response($PlanoSaude, 200);
@@ -41,9 +40,9 @@ class PlanoSaudeController extends Controller
     public function editar(Request $request, $id)
     {
 
-        $PlanoSaude = PlanoSaude::where('plano_codigo', $id)->first();
+        $PlanoSaude = PlanoSaude::where('id', $id)->first();
         if (!$PlanoSaude) {
-            return response(['status' => 'PlanoSaude não encontrado.'], 404);
+            return response(['status' => 'Plano de saúde não encontrado!'], 404);
         }
 
         $PlanoSaude->update([
@@ -56,13 +55,13 @@ class PlanoSaudeController extends Controller
 
     public function deletar($id)
     {
-        $PlanoSaude =  PlanoSaude::where('plano_codigo', $id)->first();
+        $PlanoSaude =  PlanoSaude::where('id', $id)->first();
 
         if (!$PlanoSaude) {
-            return response(['status' => 'PlanoSaude não encontrado nos registros.'], 404);
+            return response(['status' => 'Plano de saúde não encontrado!'], 404);
         }
         $PlanoSaude->delete();
 
-        return response(null, 204);
+        return response(['status' => 'Plano de saúde deletado com sucesso.'], 200);
     }
 }

@@ -15,16 +15,18 @@ class CreateConsultaTable extends Migration
     {
         Schema::create('consulta', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('proc_id');
-            $table->unsignedBigInteger('med_id');
             $table->uuid('cons_codigo');
+            $table->unsignedBigInteger('pac_id');
+            $table->unsignedBigInteger('med_id');
+            $table->unsignedBigInteger('vinculo_id')->nullable();
             $table->string('data');
             $table->string('hora');
-            $table->string('particu1lar')->default('0');
+            $table->string('particular')->default('0');
             $table->timestamps();
 
+            $table->foreign('pac_id')->references('id')->on('paciente')->onDelete('cascade');
             $table->foreign('med_id')->references('id')->on('medico')->onDelete('cascade');
-            $table->foreign('proc_id')->references('id')->on('procedimento')->onDelete('cascade');
+            $table->foreign('vinculo_id')->references('id')->on('vinculo')->onDelete('cascade');
         });
     }
 

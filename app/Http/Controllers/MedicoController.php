@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MedicoValidation;
-use App\Http\Requests\PacientePaginacaoValidation;
-use App\Models\Especialidade;
 use App\Models\Medico;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class MedicoController extends Controller

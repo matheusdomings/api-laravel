@@ -9,12 +9,10 @@ use Illuminate\Http\Request;
 
 class ProcedimentoController extends Controller
 {
-    public function listar(Request $request)
+    public function listar()
     {
-        $registrosPorPagina = $request->registro_por_pagina;
-        $medicos = Procedimento::paginate($registrosPorPagina);
-
-        return response($medicos, 200);
+        $procedimentos = Procedimento::all();
+        return response($procedimentos, 200);
     }
 
     public function cadastrar(ProcedimentoValidation $request)
@@ -22,6 +20,7 @@ class ProcedimentoController extends Controller
         $procedimento = Procedimento::create([
             'proc_nome' => $request->proc_nome,
             'proc_valor' => $request->proc_valor,
+            'proc_codigo' => mt_rand(0, 10000),
         ]);
 
         return response($procedimento, 201);
@@ -30,7 +29,7 @@ class ProcedimentoController extends Controller
     public function buscarProcedimento($id)
     {
 
-        $procedimento = Procedimento::where('proc_codigo', $id)->first();
+        $procedimento = Procedimento::where('id', $id)->first();
 
         if (!$procedimento) {
             return response(['status' => 'Procedimento não encontrado.'], 404);
@@ -41,7 +40,7 @@ class ProcedimentoController extends Controller
 
     public function editar(Request $request, $id)
     {
-        $procedimento = Procedimento::where('proc_codigo', $id)->first();
+        $procedimento = Procedimento::where('id', $id)->first();
 
         if (!$procedimento) {
             return response(['status' => 'Procedimento não encontrado.'], 404);
@@ -57,7 +56,7 @@ class ProcedimentoController extends Controller
 
     public function deletar($id)
     {
-        $procedimento = Procedimento::where('proc_codigo', $id)->first();
+        $procedimento = Procedimento::where('id', $id)->first();
         if (!$procedimento) {
             return response(['status' => 'Procedimento não encontrado nos registros.'], 404);
         }

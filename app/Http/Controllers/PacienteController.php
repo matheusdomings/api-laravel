@@ -18,9 +18,9 @@ class PacienteController extends Controller
     {
         $pacientes = Paciente::all();
         foreach ($pacientes as $paciente) {
-            $vinculo = Vinculo::where('paciente_id', $paciente->pac_codigo)->first();
+            $vinculo = Vinculo::where('paciente_id', $paciente->id)->first();
             if ($vinculo) {
-                $paciente->vinculo_codigo = $vinculo->vinc_codigo;
+                $paciente->vinculo_codigo = $vinculo->id;
             }
         }
 
@@ -32,15 +32,15 @@ class PacienteController extends Controller
         $paciente = Paciente::create([
             'pac_codigo' => mt_rand(0, 10000),
             'pac_nome' => $request->pac_nome,
-            'pac_dataNascimento' => $request->pac_dt_nascimento,
+            'pac_dt_nascimento' => $request->pac_dt_nascimento,
             'pac_telefone' => $request->pac_telefone
         ]);
 
         if ($request->plano_saude) {
             Vinculo::create([
-                'paciente_id' => $paciente->pac_codigo,
+                'paciente_id' => $paciente->id,
                 'plano_saude_id' => $request->plano_saude,
-                'nr_contrato' => DB::raw('CONCAT("CON-", LPAD(RAND() * 1000000, 6, "0"))')
+                'nr_contrato' => mt_rand(0, 100000)
             ]);
         }
 
@@ -50,8 +50,8 @@ class PacienteController extends Controller
     public function buscarPaciente($id)
     {
 
-        $paciente = Paciente::where('pac_codigo', $id)->first();
-        $vinculo = Vinculo::where('paciente_id', $paciente->pac_codigo)->first();
+        $paciente = Paciente::where('id', $id)->first();
+        $vinculo = Vinculo::where('paciente_id', $paciente->id)->first();
         if ($vinculo) {
             $paciente->plano_codigo = $vinculo->plano_saude_id;
         }
@@ -66,7 +66,7 @@ class PacienteController extends Controller
     public function editar(Request $request, $id)
     {
 
-        $paciente = Paciente::where('pac_codigo', $id)->first();
+        $paciente = Paciente::where('id', $id)->first();
         if (!$paciente) {
             return response(['status' => 'Paciente não encontrado.'], 404);
         }
@@ -74,22 +74,22 @@ class PacienteController extends Controller
         $paciente->update([
             'pac_nome' => $request->pac_nome ? $request->pac_nome : $paciente->pac_nome,
             'pac_telefone' => $request->pac_telefone ?  $request->pac_telefone :  $paciente->pac_telefone,
-            'pac_dataNascimento' => $request->pac_dataNascimento ?  $request->pac_dataNascimento :  $paciente->pac_dataNascimento
+            'pac_dt_nascimento' => $request->pac_dt_nascimento ?  $request->pac_dt_nascimento :  $paciente->pac_dt_nascimento
         ]);
 
         if ($request->plano_saude) {
             $vinculo = Vinculo::where('paciente_id', $id)->first();
             if ($vinculo) {
                 $vinculo->update([
-                    'paciente_id' => $paciente->pac_codigo,
+                    'paciente_id' => $paciente->id,
                     'plano_saude_id' => $request->plano_saude,
                     'nr_contrato' => $vinculo->nr_contrato
                 ]);
             } else {
                 Vinculo::create([
-                    'paciente_id' => $paciente->pac_codigo,
+                    'paciente_id' => $paciente->id,
                     'plano_saude_id' => $request->plano_saude,
-                    'nr_contrato' => DB::raw('CONCAT("CON-", LPAD(RAND() * 1000000, 6, "0"))')
+                    'nr_contrato' => mt_rand(0, 100000)
                 ]);
             }
         }
@@ -99,12 +99,12 @@ class PacienteController extends Controller
 
     public function deletar($id)
     {
-        $paciente =  Paciente::where('pac_codigo', $id)->first();
+        $paciente =  Paciente::where('id', $id)->first();
         if (!$paciente) {
             return response(['status' => 'Paciente não encontrado nos registros.'], 404);
         }
         $paciente->delete();
 
-        return response(null, 204);
+        return response(['status' => 'Paciente excluído com sucesso.'], 200);
     }
 }
